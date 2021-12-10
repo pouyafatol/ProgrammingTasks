@@ -1,50 +1,57 @@
-import requests
-from pprint import pprint
-import base64
 from github import Github
-import pickle
 
-
-def showUserInfo(username):
-    url = f"https://api.github.com/users/{username}"
-    user_data = requests.get(url).json()
-    pprint(user_data)
 
 def getPublicRepositories(username):
-    # git = Github()
-    # user = git.get_user(username)
-    # with open('user.pkl','wb') as f:
-    #     pickle.dump(user,f)
-    with open('user.pkl','rb') as f:
-        user = pickle.load(f)
+    token = "" # if you get exception on limit request please set your personal github token 
+    if(token):
+        github = Github(token)
+    else:
+        github = Github()
+    user = github.get_user(username)
     repos = []
     for repo in user.get_repos():
         repos.append(repo)
     return repos
 
-def print_repo(repo):
-    # repository full name
-    print("Full name:", repo.full_name)
-    print("Language:", repo.get_languages())
-    print("Number of forks:", repo.forks_count)
-    print("Number of stars:", repo.stargazers_count)
-    print("Number of branches:", repo.get_branches().totalCount)
-    print("Number of commits:", repo.get_commits().totalCount)
-    print("Number of releases:", repo.get_releases().totalCount)
-    print("Number of closed issues:", repo.get_issues(state='closed').totalCount)
-    print("Number of tags:", repo.get_tags().totalCount)
-    print("Number of contributors:", repo.get_contributors().totalCount)
-    print("-"*50)
-    # # repository content (files & directories)
-    # print("Contents:")
-    # for content in repo.get_contents(""):
-    #     print(content)
+
+def printTotalCountAndMean(repos):
+    dic = {'commits': 0, 'stars': 0, 'contributors': 0, 'branches': 0, 'tags': 0, 'forks': 0, 'releases': 0, 'closedIssues': 0}
+    languages = dict()
+    for repo in repos:
+        print("Full name:", repo.full_name)
+        dic['commits'] += repo.get_commits().totalCount
+        dic['stars'] += repo.stargazers_count
+        dic['contributors'] += repo.get_contributors().totalCount
+        dic['branches'] += repo.get_branches().totalCount
+        dic['tags'] += repo.get_tags().totalCount
+        dic['forks'] += repo.forks_count
+        dic['releases'] += repo.get_releases().totalCount
+        dic['closedIssues'] += repo.get_issues(state='closed').totalCount
+        
+        for language, codelines in repo.get_languages().items():
+            if (language in list(languages.keys())):
+                languages[language] += int(codelines)
+            else:
+                languages[language] = int(codelines)
+
+    print('-'*50)
+    
+    for key,value in dic.items():
+        mean = "{:.2f}".format(value/len(repos))
+        print(f'{key} : total = {value}, mean = {mean}')
+    
+    print('-'*50)
+
+    for language, totalCodeLine in languages.items():
+        mean = "{:.2f}".format(totalCodeLine/len(repos))
+        print(f'{language} : total = {totalCodeLine}, mean = {mean}')
     
 
+def run(account):
+    repos = getPublicRepositories(account)
+    printTotalCountAndMean(repos)
 
-user = 'kaggle'
 
-repos = getPublicRepositories(user)
-# print_repo(repos[1])
-for rep in repos:
-    print_repo(rep)
+if __name__ == '__main__':
+    account = 'kaggle'
+    run(account)

@@ -51,7 +51,7 @@ def checkStatusCodeAndReport(links):
     print(f'{len(serverError)} Server error links')
     print(f'Total link’s validity: {validity}%')
 
-def main():
+def run():
     dirName = 'test'
     sourceDirPath = os.path.join(os.getcwd(),dirName)
 
@@ -60,4 +60,4 @@ def main():
     checkStatusCodeAndReport(links)
 
 if __name__ == '__main__':
-    main()
+    run()
