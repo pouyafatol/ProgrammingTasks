@@ -2,7 +2,7 @@
 
 This repo do two task
 
-task 1. Get all links from nested files and directories
+task 1. Check documents link status
 
 	Requirements:
       pip install re
@@ -11,7 +11,7 @@ task 1. Get all links from nested files and directories
 	How to Run:
       python linkFinkder.py 
 	
-task 2. Get some information of a account
+task 2. Get GitHub Repository statistics
 		
 	Requirements:
       pip install PyGithub
