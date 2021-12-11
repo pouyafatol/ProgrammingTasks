@@ -54,6 +54,7 @@ def checkStatusCodeAndReport(links):
     print(f'{len(redirection)} Redirection links')
     print(f'{len(clientError)} Client error links')
     print(f'{len(serverError)} Server error links')
+    validity = "{:.2f}".format(validity)
     print(f'Total link’s validity: {validity}%')
 
 def run(dirName):
