@@ -45,14 +45,15 @@ def checkStatusCodeAndReport(links):
     noOfInvalidLinks = len(invalidLinkes)
     validity = (noOfTotalLinks-noOfInvalidLinks)/noOfTotalLinks * 100
 
+    print('Total link’s STATUS')
+    print('===================')
     print(f'{len(success)} Success links')
     print(f'{len(redirection)} Redirection links')
     print(f'{len(clientError)} Client error links')
     print(f'{len(serverError)} Server error links')
     print(f'Total link’s validity: {validity}%')
 
-def run():
-    dirName = 'test'
+def run(dirName):
     sourceDirPath = os.path.join(os.getcwd(),dirName)
 
     filesPath = getFilesPath(sourceDirPath)
@@ -60,4 +61,5 @@ def run():
     checkStatusCodeAndReport(links)
 
 if __name__ == '__main__':
-    run()
+    dirName = 'test'
+    run(dirName)
