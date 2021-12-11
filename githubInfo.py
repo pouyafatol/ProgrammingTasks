@@ -15,7 +15,7 @@ def getPublicRepositories(username):
 
 
 def printTotalCountAndMean(repos):
-    dic = {'commits': 0, 'stars': 0, 'contributors': 0, 'branches': 0, 'tags': 0, 'forks': 0, 'releases': 0, 'closedIssues': 0}
+    dic = {'commits': 0, 'stars': 0, 'contributors': 0, 'branches': 0, 'tags': 0, 'forks': 0, 'releases': 0, 'closedIssues': 0, 'environments': 0}
     languages = dict()
     for repo in repos:
         print("Full name:", repo.full_name)
@@ -27,6 +27,7 @@ def printTotalCountAndMean(repos):
         dic['forks'] += repo.forks_count
         dic['releases'] += repo.get_releases().totalCount
         dic['closedIssues'] += repo.get_issues(state='closed').totalCount
+        dic['environments'] += repo.get_workflows().totalCount
         
         for language, codelines in repo.get_languages().items():
             if (language in list(languages.keys())):
@@ -38,13 +39,13 @@ def printTotalCountAndMean(repos):
     
     for key,value in dic.items():
         mean = "{:.2f}".format(value/len(repos))
-        print(f'{key} : total = {value}, mean = {mean}')
+        print(f'{key}: total = {value}, mean = {mean}')
     
     print('-'*50)
 
     for language, totalCodeLine in languages.items():
         mean = "{:.2f}".format(totalCodeLine/len(repos))
-        print(f'{language} : total = {totalCodeLine}, mean = {mean}')
+        print(f'{language}: total = {totalCodeLine}, mean = {mean}')
     
 
 def run(account):
