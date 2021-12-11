@@ -37,7 +37,10 @@ def checkStatusCodeAndReport(links):
 
             elif 500 <= status <= 599:
                 serverError.append(link)
-
+            
+            else:
+                invalidLinkes.append(link)
+                
         except:
             invalidLinkes.append(link)
 
