@@ -2,8 +2,7 @@ from github import Github
 
 
 def getPublicRepositories(username):
-    token = "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"
-    # token = "" # if you get exception on limit request please set your personal github token 
+    token = "" # if you get exception on limit request please set your personal github token 
     if(token):
         github = Github(token)
     else:
