@@ -26,6 +26,9 @@ def checkStatusCodeAndReport(links):
         try:
             response = requests.get(link)
             status = response.status_code
+            if response.history:
+                status = response.history[0].status_code
+                
             if 200 <= status <= 299:
                 success.append(link)
 
